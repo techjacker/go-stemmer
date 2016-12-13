@@ -1,0 +1,17 @@
+#!/bin/sh
+
+#################################################################
+#
+# prepend feature branch name to the commit message
+# eg feature/MT-3453 -> 'MT-3453 my brilliant new feature'
+#
+# 1. save to .git/hooks/prepare-commit-msg
+# 2. chmod +x .git/hooks/prepare-commit-msg
+#
+#################################################################
+
+BRANCH_STR=$(git status | sed -n 1p)
+
+if echo "$BRANCH_STR" | grep -q 'feature'; then
+  echo "${BRANCH_STR/On\ branch\ feature\//}: $(cat $1)" > $1
+fi
